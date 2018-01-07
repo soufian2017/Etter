@@ -14,7 +14,6 @@ before using it make sure you rename the file to etter.dns.backup or some thing 
 
 # Setup
 
-<code>chmod +x setup.sh</br>
-./setup.sh
-etter -e -s --ip XXX.XXX.XXX.XXX
-</code>
+<code>chmod +x setup.sh</code>
+<code>./setup.sh</code>
+<code>etter -e -s --ip XXX.XXX.XXX.XXX</code>
