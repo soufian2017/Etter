@@ -13,4 +13,8 @@ this tools will erase your etter.dns default file
 before using it make sure you rename the file to etter.dns.backup or some thing like that
 
 # Setup
-<code>chmod +x setup.sh</code>
+
+<code>chmod +x setup.sh</br>
+./setup.sh
+etter -e -s --ip XXX.XXX.XXX.XXX
+</code>
