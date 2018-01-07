@@ -1,0 +1,13 @@
+_csrf=sGJWlpHVSMBKmsWTsUKiApNbyvAbEs9sX7QtY=
+locale_x=en_US
+processSignin=main
+fn_sync_data=%7B%22f%22%3A%229581e88946c74ab78db94e260cb455a7%22%2C%22s%22%3A%22UNIFIED_LOGIN_INPUT_PASSWORD%22%2C%22syncStatus%22%3A%22data%22%2C%22chk%22%3A%7B%22ts%22%3A1515346583699%2C%22eteid%22%3A%5B-18414726428%2C-11456718876%2C2316438656%2C15993503796%2C4474317382%2C2344769659%2C4678630155%2C-3891619036%5D%2C%22tts%22%3A1241%7D%2C%22dc%22%3A%22%7B%5C%22screen%5C%22%3A%7B%5C%22colorDepth%5C%22%3A24%2C%5C%22pixelDepth%5C%22%3A24%2C%5C%22height%5C%22%3A768%2C%5C%22width%5C%22%3A1366%2C%5C%22availHeight%5C%22%3A741%2C%5C%22availWidth%5C%22%3A1366%7D%2C%5C%22ua%5C%22%3A%5C%22Mozilla%2F5.0%20(X11%3B%20Linux%20x86_64%3B%20rv%3A52.0)%20Gecko%2F20100101%20Firefox%2F52.0%5C%22%7D%22%2C%22err%22%3A%22%22%7D
+intent=signin
+ads-client-context=signin
+requestUrl=/signin?country.x=DZ&locale.x=en_DZ
+login_email=scrillex@outlook.fr
+login_password=root
+btnLogin=Login
+splitLoginContext=inputPassword
+splitLoginCookiedFallback=true
+
